@@ -1,0 +1,29 @@
+.cart{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: aliceblue;
+    width: 50%;
+    border: 1px solid rgb(192, 191, 191);
+    padding: 5px 5px;
+    border-radius: 3%;
+}
+
+.total{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 50px;
+    
+}
+
+.input{
+    width: 15px;
+}
