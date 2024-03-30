@@ -27,7 +27,7 @@ const Shop = () => {
         <h1>Shop Software </h1>
         <div className='products'>
             
-         {items.map((item)=>(<Product data={item} />))}
+         {items.map((item)=>(<Product data={item} items = {items} />))}
         </div>
       
     </div>

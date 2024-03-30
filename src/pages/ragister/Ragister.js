@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {getDocs, addDoc , collection} from 'firebase/firestore';
-import {db} from '../../firebase';
 
 function Ragister() {
   const [details, setDetails] = useState({
@@ -14,7 +12,6 @@ function Ragister() {
     dateofbirth: "",
   });
 
-  const dbref = collection(db, "Auth")
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +26,7 @@ function Ragister() {
     
     const {firstname, lastname, email, confemail, pswrd,confpswrd,dateofbirth, } = details;
     
-        await addDoc(dbref, {FirstName: firstname, LastName: lastname, Email : email, ConfirmEmail : confemail, Password: pswrd, ConfirmPassword: confpswrd, DateOfBirth: dateofbirth})
+     //   await addDoc(dbref, {FirstName: firstname, LastName: lastname, Email : email, ConfirmEmail : confemail, Password: pswrd, ConfirmPassword: confpswrd, DateOfBirth: dateofbirth})
        
   
   };
