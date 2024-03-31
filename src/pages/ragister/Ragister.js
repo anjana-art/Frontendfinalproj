@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import firebase from "firebase/app";
+import { db } from "../../firebaseConfig"; //to use firestore database , or to have access
+import { addDoc, getDocs, collection } from "firebase/firestore";
 
 function Ragister() {
   const [details, setDetails] = useState({
+    id: uuidv4(),
     firstname: "",
     lastname: "",
     email: "",
@@ -12,6 +17,7 @@ function Ragister() {
     dateofbirth: "",
   });
 
+  const usersRef = collection(db, "user-details");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,14 +27,41 @@ function Ragister() {
       return { ...prev, [name]: value };
     });
   };
+  
+
+  const addUser = async () => {
+    const {
+      firstname,
+      lastname,
+      email,
+      confemail,
+      pswrd,
+      confpswrd,
+      dateofbirth,
+    } = details;
+    await addDoc(usersRef, {
+       firstname,
+      lastname,
+      email,
+      confemail,
+      pswrd,
+      confpswrd,
+      dateofbirth
+    });
+    }
 
   const submit = async () => {
-    
-    const {firstname, lastname, email, confemail, pswrd,confpswrd,dateofbirth, } = details;
-    
-     //   await addDoc(dbref, {FirstName: firstname, LastName: lastname, Email : email, ConfirmEmail : confemail, Password: pswrd, ConfirmPassword: confpswrd, DateOfBirth: dateofbirth})
-       
-  
+    const {
+      firstname,
+      lastname,
+      email,
+      confemail,
+      pswrd,
+      confpswrd,
+      dateofbirth,
+    } = details;
+
+    //   await addDoc(dbref, {FirstName: firstname, LastName: lastname, Email : email, ConfirmEmail : confemail, Password: pswrd, ConfirmPassword: confpswrd, DateOfBirth: dateofbirth})
   };
   return (
     <>
@@ -102,7 +135,7 @@ function Ragister() {
             ></input>
             <br /> <br />
             <button>Cancel</button>
-            <button onClick={submit}>Create Account</button>
+            <button onClick={addUser}>Create Account</button>
             <p>
               Already have an Account?<Link to="/Login">Login here</Link>
             </p>
