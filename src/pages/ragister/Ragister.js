@@ -7,7 +7,6 @@ import { addDoc, getDocs, collection } from "firebase/firestore";
 
 function Ragister() {
   const [details, setDetails] = useState({
-    id: uuidv4(),
     firstname: "",
     lastname: "",
     email: "",
@@ -16,18 +15,16 @@ function Ragister() {
     confpswrd: "",
     dateofbirth: "",
   });
-
-  const usersRef = collection(db, "user-details");
+ 
+  const usersCollectionRef = collection(db, "user-details");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name + ",,,,," + value);
 
     setDetails((prev) => {
       return { ...prev, [name]: value };
     });
   };
-  
 
   const addUser = async () => {
     const {
@@ -39,19 +36,8 @@ function Ragister() {
       confpswrd,
       dateofbirth,
     } = details;
-    await addDoc(usersRef, {
-       firstname,
-      lastname,
-      email,
-      confemail,
-      pswrd,
-      confpswrd,
-      dateofbirth
-    });
-    }
-
-  const submit = async () => {
-    const {
+    await addDoc(usersCollectionRef, {
+      // id: uuidv4(),
       firstname,
       lastname,
       email,
@@ -59,10 +45,34 @@ function Ragister() {
       pswrd,
       confpswrd,
       dateofbirth,
-    } = details;
-
-    //   await addDoc(dbref, {FirstName: firstname, LastName: lastname, Email : email, ConfirmEmail : confemail, Password: pswrd, ConfirmPassword: confpswrd, DateOfBirth: dateofbirth})
+    });
   };
+
+  const submitHandeler = async(e) =>{
+    e.preventDefault();
+    if(details){
+      const {
+        firstname,
+        lastname,
+        email,
+        confemail,
+        pswrd,
+        confpswrd,
+        dateofbirth,
+      } = details;
+      await addDoc(usersCollectionRef, {
+        // id: uuidv4(),
+        firstname,
+        lastname,
+        email,
+        confemail,
+        pswrd,
+        confpswrd,
+        dateofbirth,
+      });
+    }
+  }
+
   return (
     <>
       <div className="container">
@@ -70,7 +80,7 @@ function Ragister() {
           <h2>Sign Up</h2>
         </div>
         <div>
-          <form>
+          <form onSubmit={submitHandeler}>
             First Name:
             <input
               type="text"
@@ -135,7 +145,7 @@ function Ragister() {
             ></input>
             <br /> <br />
             <button>Cancel</button>
-            <button onClick={addUser}>Create Account</button>
+            <button type="submit">Create Account</button>
             <p>
               Already have an Account?<Link to="/Login">Login here</Link>
             </p>

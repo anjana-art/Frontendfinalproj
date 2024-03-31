@@ -13,7 +13,6 @@ const firebaseConfig = {
   };
 
   const app = initializeApp(firebaseConfig);
-  export const auth = getAuth();
-  
-  export const db = getFirestore(app); //to use cloudfirestore database
- 
+  const auth = getAuth();
+  const db = getFirestore(app); //to use cloudfirestore database
+ export{app, db, auth}
