@@ -22,7 +22,7 @@ const Cart = () => {
 
         </div>
         <div className='total'>
-            <h3>Total Amount: {totalAmount}  eur</h3>
+            <h3>Total Amount: {getTotalCartAmount()}  eur</h3>
             <button><Link to = '/shop'>Continue Shopping</Link></button>
             <button>Checkout</button>
             </div>  

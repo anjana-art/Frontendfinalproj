@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import firebase from "firebase/app";
 import { db } from "../../firebaseConfig"; //to use firestore database , or to have access
 import { addDoc, getDocs, collection } from "firebase/firestore";
-import {getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import {auth} from '../../firebaseConfig';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../firebaseConfig';
 import AuthDetails from "../login/AuthDetails";
 
 function Ragister() {
@@ -19,7 +19,7 @@ function Ragister() {
     dateofbirth: "",
   });
   const navigate = useNavigate();
-  const[errorMsg, setErrorMsg]= useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const usersCollectionRef = collection(db, "user-details");
 
   const handleChange = (e) => {
@@ -41,7 +41,7 @@ function Ragister() {
       dateofbirth,
     } = details;
     await addDoc(usersCollectionRef, {
-      // id: uuidv4(),
+      id: uuidv4(),
       firstname,
       lastname,
       email,
@@ -52,9 +52,9 @@ function Ragister() {
     });
   };
 
-  const submitHandeler = async(e) =>{
+  const submitHandeler = async (e) => {
     e.preventDefault();
-    if(details){
+    if (details) {
       const {
         firstname,
         lastname,
@@ -64,30 +64,31 @@ function Ragister() {
         confpswrd,
         dateofbirth,
       } = details;
-       if(details.firstname===" " || details.lastname===" "||details.email===" "|| details.confemail===" "|| details.password===" "|| details.confpswrd===" "||details.dateofbirth===" "){
+      if (firstname === " " || lastname === " " || email === " " || confemail === " " || password === " " || confpswrd === " " || dateofbirth === " ") {
         setErrorMsg("Fill all Fields");
         return;
-       }
-       setErrorMsg("");
+      }
+      setErrorMsg("");
 
-      createUserWithEmailAndPassword(auth,email, password)
-      .then((user) => {
-        console.log(user)
+
+      try {
+        const user = await createUserWithEmailAndPassword(auth, email, password);
+        console.log(user);
+        await addDoc(usersCollectionRef, {
+          id: uuidv4(),
+          firstname,
+          lastname,
+          email,
+          confemail,
+          password,
+          confpswrd,
+          dateofbirth,
+        });
         navigate('/shop');
-      }).catch((error)=>{
+      } catch (error) {
         setErrorMsg(error.message)
         console.log(error);
-      })
-      await addDoc(usersCollectionRef, {
-        // id: uuidv4(),
-        firstname,
-        lastname,
-        email,
-        confemail,
-        password,
-        confpswrd,
-        dateofbirth,
-      });
+      }
     }
   }
 
@@ -169,7 +170,7 @@ function Ragister() {
             </p>
           </form>
         </div>
-        <AuthDetails/>
+        <AuthDetails />
       </div>
     </>
   );

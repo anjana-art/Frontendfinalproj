@@ -7,13 +7,7 @@ const CartItems = (props) => {
     id,
     name,
     logo,
-    catagory,
     price,
-    description,
-    featureone,
-    featuretwo,
-    featurethree,
-    featurefour,
   } = props.data;
   const {cartItems, addToCart, removeFromCart,  updateCartItemCount } = useContext(ShopContext);
 

@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from 'react-router-dom';
-import Navforlogin from "../Login/Navforlogin";
 import './Update.css';
 
 
@@ -9,7 +8,7 @@ const Update = () => {
      <div>hello</div>    }
   return (
     <div>
-        <Navforlogin/>
+      
         <h4>Update</h4>
 
       <div className="update-container"> 
