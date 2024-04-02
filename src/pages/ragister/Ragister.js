@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import firebase from "firebase/app";
 import { db } from "../../firebaseConfig"; //to use firestore database , or to have access
 import { addDoc, getDocs, collection } from "firebase/firestore";
+import {getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {auth} from '../../firebaseConfig';
+import AuthDetails from "../login/AuthDetails";
 
 function Ragister() {
   const [details, setDetails] = useState({
@@ -11,11 +14,12 @@ function Ragister() {
     lastname: "",
     email: "",
     confemail: "",
-    pswrd: "",
+    password: "",
     confpswrd: "",
     dateofbirth: "",
   });
- 
+  const navigate = useNavigate();
+  const[errorMsg, setErrorMsg]= useState('');
   const usersCollectionRef = collection(db, "user-details");
 
   const handleChange = (e) => {
@@ -32,7 +36,7 @@ function Ragister() {
       lastname,
       email,
       confemail,
-      pswrd,
+      password,
       confpswrd,
       dateofbirth,
     } = details;
@@ -42,7 +46,7 @@ function Ragister() {
       lastname,
       email,
       confemail,
-      pswrd,
+      password,
       confpswrd,
       dateofbirth,
     });
@@ -56,17 +60,31 @@ function Ragister() {
         lastname,
         email,
         confemail,
-        pswrd,
+        password,
         confpswrd,
         dateofbirth,
       } = details;
+       if(details.firstname===" " || details.lastname===" "||details.email===" "|| details.confemail===" "|| details.password===" "|| details.confpswrd===" "||details.dateofbirth===" "){
+        setErrorMsg("Fill all Fields");
+        return;
+       }
+       setErrorMsg("");
+
+      createUserWithEmailAndPassword(auth,email, password)
+      .then((user) => {
+        console.log(user)
+        navigate('/shop');
+      }).catch((error)=>{
+        setErrorMsg(error.message)
+        console.log(error);
+      })
       await addDoc(usersCollectionRef, {
         // id: uuidv4(),
         firstname,
         lastname,
         email,
         confemail,
-        pswrd,
+        password,
         confpswrd,
         dateofbirth,
       });
@@ -121,8 +139,8 @@ function Ragister() {
             <input
               type="password"
               placeholder="password"
-              name="pswrd"
-              value={details.pswrd}
+              name="password"
+              value={details.password}
               onChange={handleChange}
             ></input>
             <br /> <br />
@@ -151,6 +169,7 @@ function Ragister() {
             </p>
           </form>
         </div>
+        <AuthDetails/>
       </div>
     </>
   );

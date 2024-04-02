@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Link} from 'react-router-dom';
+import AuthDetails from '../login/AuthDetails';
 
 export default function ButtonAppBar() {
   return (
@@ -35,6 +36,8 @@ export default function ButtonAppBar() {
           <Button color="inherit"><Link to='/login'>Login</Link></Button>
 
           </Typography>
+
+          <AuthDetails/>
           
         </Toolbar>
       </AppBar>
