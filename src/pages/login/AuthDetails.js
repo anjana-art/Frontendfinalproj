@@ -1,6 +1,7 @@
 import React , {useEffect, useState} from 'react';
 import {auth} from '../../firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged,signOut } from 'firebase/auth';
+import {Link} from 'react-router-dom';
 
 
 const AuthDetails = () => {
@@ -15,9 +16,21 @@ const AuthDetails = () => {
             }
         });
 
+        return()=> {
+            listen();
+        }
+
     },[]);
+
+    const userSignOut = () =>{
+        signOut(auth).then(()=>{
+            console.log('loged out successfully.')
+        }).catch(error => console.log(error))
+    }
+
+
   return (
-        <div>{authUser ? <p>Sign up</p> : <p>logged in</p>} </div>
+        <div>{authUser ?<p> <button onClick={userSignOut}><Link to='/'>Logout</Link></button> </p>: <p><button><Link to='/login'>LogIn</Link></button> </p>}</div>
   )
 }
 

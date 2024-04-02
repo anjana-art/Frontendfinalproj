@@ -8,6 +8,7 @@ import ShopContextProvider, { ShopContext } from './contexts/ShopContext';
 import Cart from './pages/cart/Cart';
 import ShopUserLogged from './pages/shop/ShopUserLogged';
 import Update from "./pages/userdetails/Update";
+import Userdetails from './pages/userdetails/Userdetails';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/cart' element={<Cart/>}/>
         <Route path='/update' element={<Update/>}/>
+        <Route path='/userdetails' element={<Userdetails/>}/>
    
 
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PRODUCTS from './products';
 import Product from './Product';
 import './shop.css';
-import NavShop from './NavShop';
+import NavShopUser from './NavShopUser';
 import Filter from './filter/Filter';
 
 
@@ -18,7 +18,7 @@ const ShopUserLogged = () => {
   return (
 
     <div>
-      <NavShop />
+      <NavShopUser />
       <Filter
         productItems={productItems}
         filterItems={filterItems}

@@ -24,7 +24,7 @@ function Login(){
     e.preventDefault();
     signInWithEmailAndPassword(auth,user.email, user.password)
     .then((user) => {
-      alert('logged in');
+      alert(user.email +'logged in' );
       navigate('/shop');
 
     }).catch((error)=>{
