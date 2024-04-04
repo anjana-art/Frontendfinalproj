@@ -33,6 +33,7 @@ function Ragister() {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
   const usersCollectionRef = collection(db, "user-details");
+  const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,14 +70,19 @@ function Ragister() {
 
       
       if (details.firstname.length===0 || details.lastname.length === 0 || details.email.length ===0 || details.confemail.length ===0 || details.password.length ===0|| details.confpswrd.length ===0 || details.dateofbirth.length ===0) {
-       setError(true); }
+       setError(true);
+       alert("ERROR: Input Field Should Not Be Empty!!")
+      
+      }
        else if(details.firstname.length <3 || details.lastname.length <3)
        {
         setError(true)
+        alert("Should be minimum three letter")
        }
          
        else if(details.dateofbirth < Number(2006-4-4)){
         setError(true);
+        alert("User Must be over 18.")
       
        }
        else if(!details.confemail.match(details.email)){
@@ -88,9 +94,9 @@ function Ragister() {
           setError(true);
           alert("entered password and confirm password should same.")
        }
-       const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+       
 
-       if(!details.email.match(emailValidation)){
+       else if(!details.email.match(emailValidation)){
         setError(true);
           alert("Not valid Email", email)
 
@@ -140,7 +146,7 @@ function Ragister() {
               name="firstname"
               value={details.firstname}
               onChange={handleChange}
-            ></input>{error?<label>Should be minimum three letter</label>:''}
+            ></input>
             <br /> <br />
             Last Name:
             <input
@@ -149,7 +155,7 @@ function Ragister() {
               name="lastname"
               value={details.lastname}
               onChange={handleChange}
-            ></input>{error?<label>Should be minimum three letter</label>:''}
+            ></input>
             <br /> <br />
             Email:
             <input
@@ -194,8 +200,8 @@ function Ragister() {
               name="dateofbirth"
               value={details.dateofbirth}
               onChange={handleChange}
-            ></input>{error?<label>User Must be over 18.</label>:""}
-            <br /> {error? <label>ERROR: Input Field Should Not Be Empty!! </label>:""}
+            ></input>
+            <br />
             <br />
             <button>Cancel</button>
             <button type="submit">Create Account</button>
