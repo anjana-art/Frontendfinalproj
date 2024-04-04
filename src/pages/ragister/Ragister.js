@@ -3,10 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import firebase from "firebase/app";
 import { db } from "../../firebaseConfig"; //to use firestore database , or to have access
-import { addDoc, getDocs, collection } from "firebase/firestore";
+import {
+  addDoc,
+  getDocs,
+  collection,
+  where,
+  query,
+  doc,
+} from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../../firebaseConfig';
+import { auth } from "../../firebaseConfig";
 import AuthDetails from "../login/AuthDetails";
+
+
 
 function Ragister() {
   const [details, setDetails] = useState({
@@ -18,8 +27,11 @@ function Ragister() {
     confpswrd: "",
     dateofbirth: "",
   });
+  const [error, setError] = useState(false);
+
+  const [metch, setMetch] = useState([]);
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
   const usersCollectionRef = collection(db, "user-details");
 
   const handleChange = (e) => {
@@ -40,16 +52,6 @@ function Ragister() {
       confpswrd,
       dateofbirth,
     } = details;
-    await addDoc(usersCollectionRef, {
-      id: uuidv4(),
-      firstname,
-      lastname,
-      email,
-      confemail,
-      password,
-      confpswrd,
-      dateofbirth,
-    });
   };
 
   const submitHandeler = async (e) => {
@@ -64,15 +66,43 @@ function Ragister() {
         confpswrd,
         dateofbirth,
       } = details;
-      if (firstname === " " || lastname === " " || email === " " || confemail === " " || password === " " || confpswrd === " " || dateofbirth === " ") {
-        setErrorMsg("Fill all Fields");
-        return;
-      }
-      setErrorMsg("");
 
+      
+      if (details.firstname.length===0 || details.lastname.length === 0 || details.email.length ===0 || details.confemail.length ===0 || details.password.length ===0|| details.confpswrd.length ===0 || details.dateofbirth.length ===0) {
+       setError(true); }
+       else if(details.firstname.length <3 || details.lastname.length <3)
+       {
+        setError(true)
+       }
+         
+       else if(details.dateofbirth < Number(2006-4-4)){
+        setError(true);
+      
+       }
+       else if(!details.confemail.match(details.email)){
+        setError(true);
+        alert("confirm email field should be same as email field.")
+
+       }
+       else if(!details.confpswrd.match(details.password)){
+          setError(true);
+          alert("entered password and confirm password should same.")
+       }
+       const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+       if(!details.email.match(emailValidation)){
+        setError(true);
+          alert("Not valid Email", email)
+
+       }
+     else{
 
       try {
-        const user = await createUserWithEmailAndPassword(auth, email, password);
+        const user = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         console.log(user);
         await addDoc(usersCollectionRef, {
           id: uuidv4(),
@@ -84,14 +114,17 @@ function Ragister() {
           confpswrd,
           dateofbirth,
         });
-        navigate('/shop');
+        navigate("/shop");
       } catch (error) {
-        setErrorMsg(error.message)
-        console.log(error);
+        setErrorMsg(error.message);
+        alert(error);
       }
     }
-  }
+  };
 
+     }
+
+    
   return (
     <>
       <div className="container">
@@ -107,7 +140,7 @@ function Ragister() {
               name="firstname"
               value={details.firstname}
               onChange={handleChange}
-            ></input>
+            ></input>{error?<label>Should be minimum three letter</label>:''}
             <br /> <br />
             Last Name:
             <input
@@ -116,7 +149,7 @@ function Ragister() {
               name="lastname"
               value={details.lastname}
               onChange={handleChange}
-            ></input>
+            ></input>{error?<label>Should be minimum three letter</label>:''}
             <br /> <br />
             Email:
             <input
@@ -161,8 +194,9 @@ function Ragister() {
               name="dateofbirth"
               value={details.dateofbirth}
               onChange={handleChange}
-            ></input>
-            <br /> <br />
+            ></input>{error?<label>User Must be over 18.</label>:""}
+            <br /> {error? <label>ERROR: Input Field Should Not Be Empty!! </label>:""}
+            <br />
             <button>Cancel</button>
             <button type="submit">Create Account</button>
             <p>

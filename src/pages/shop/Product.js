@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { ShopContext } from "../../contexts/ShopContext";
 import { Link } from "react-router-dom";
 import { IoIosCloseCircle } from "react-icons/io";
-
+import './product.css';
 const Product = (props) => {
   const {
     id,
@@ -28,7 +28,7 @@ const Product = (props) => {
   return (
     <>
       {close ? (
-        <div>
+        <div className="detailView">
           {detail.map((props) => {
             return (
               <>

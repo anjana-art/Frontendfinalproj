@@ -1,0 +1,51 @@
+.container-checkout{
+    background-color: bisque;
+    height:  400px;
+    width: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid gray;
+   
+}
+
+.cardNumber{
+  width: 100%;
+}
+.inputCardNumber{
+    width: 80%;
+    height: 50%;
+    border: 1px solid black;
+    margin-top: 10px;
+
+}
+.expairyDate{
+    width:50%;
+   
+}
+.inputExpairyDate{
+    width: 25%;
+}
+.verificationCode{
+    display: flex;
+    float:center;
+    width: 50%;
+
+}
+.inputVerificationCode{
+    width: 30%;
+    display: flex;
+    float:center;
+}
+
+.nameCardholder{
+    width: 80%;
+    height: 60px;
+}
+
+.inputNameCardholder{
+    height: 30px;
+    width: 70%;
+}

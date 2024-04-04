@@ -1,35 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import { db } from "../../firebaseConfig";
-import { collection, doc,query, getDocs,where } from "firebase/firestore";
-import { v4 as uuidv4 } from 'uuid';
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserContext } from "../../contexts/UserContext";
+import { app } from "../../firebaseConfig";
+import { doc, collection, getDocs } from "firebase/firestore";
+import "../userdetails/userdetail.css";
+import Update from "./Update";
+import NavShopUser from "../shop/NavShopUser";
 
+export default function Userdetails() {
+  const [usersdetails, setUsersdetails] = useState([]);
+  const currentUser = useContext(UserContext);
 
-
-const Userdetails = () => {
-  const usersRef = collection(db, "user-details");
-  const q = query(usersRef, where('uid', '==', 'userID'), where('config1', '!=', false));
-
-
-
-
+  const usersCollectionRef = collection(db, "user-details");
 
   const getUsers = async () => {
-    const userDocs = await getDocs(q);
-    console.log(userDocs);
-  }
+    const data = await getDocs(usersCollectionRef);
+    setUsersdetails(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    console.log(data);
+  };
 
   useEffect(() => {
     getUsers();
   }, []);
 
-
   return (
-    <div>
-      here display user details of logged in person// contain update button
-      <button><Link to='/update'>Update</Link></button>
-    </div>
-  )
-}
+    <>
+    <NavShopUser/>
+      <h2>Profile Page</h2>
 
-export default Userdetails
+      {usersdetails.map((userdetail) => {
+        if (currentUser.email && currentUser.email === userdetail.email)
+          return (
+            <>
+              <div key={userdetail.id} className="profile">
+                <div className="divprofile">
+                  First Name:<b>{userdetail.firstname} </b>
+                </div>
+                <div className="divprofile">
+                  Last Name:<b>{userdetail.lastname}</b>
+                </div>
+                <div className="divprofile">
+                  Email:<b> {userdetail.email}</b>
+                </div>
+                <div className="divprofile">
+                  Date of Birth: <b>{userdetail.dateofbirth}</b>
+                </div>
+              </div>
+                 
+              <button>
+                <Link to="/update">UPDATE</Link>
+              </button>
+            </>
+          );
+      })}
+    </>
+  );
+}
